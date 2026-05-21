@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>You're in — Recall</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;0,900;1,300;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0C0C0E;
+  --paper:#F5F2EC;
+  --cream:#EDE9E0;
+  --accent:#D4522A;
+  --muted:#7A7570;
+  --border:#D8D3CA;
+}
+html,body{min-height:100%;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;border-bottom:1px solid var(--border)}
+.logo{font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;letter-spacing:-0.02em}
+.logo span{color:var(--accent)}
+
+/* HERO */
+.hero{min-height:calc(100vh - 65px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem;text-align:center;position:relative;overflow:hidden}
+
+/* FLOATING ORBS */
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.18;pointer-events:none;animation:drift 12s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:var(--accent);top:-120px;right:-100px;animation-delay:0s}
+.orb2{width:400px;height:400px;background:#4A6FA5;bottom:-100px;left:-80px;animation-delay:-5s}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,20px)}}
+
+/* SPOT NUMBER */
+.spot-badge{display:inline-flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:2rem;padding:0.5rem 1.2rem;font-size:0.78rem;color:var(--muted);margin-bottom:2rem;animation:fadeUp 0.5s ease both}
+.spot-dot{width:7px;height:7px;border-radius:50%;background:var(--accent3,#3EC97A);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* MAIN CONTENT */
+.eyebrow{font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:1.2rem;animation:fadeUp 0.5s 0.05s ease both;opacity:0}
+h1{font-family:'Fraunces',serif;font-size:4.5rem;font-weight:900;letter-spacing:-0.03em;line-height:1.05;margin-bottom:1.5rem;animation:fadeUp 0.6s 0.1s ease both;opacity:0}
+h1 em{font-style:italic;color:var(--accent)}
+.sub{font-size:1.05rem;color:var(--muted);line-height:1.7;max-width:480px;margin:0 auto 3rem;animation:fadeUp 0.6s 0.18s ease both;opacity:0}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* WHAT NEXT CARDS */
+.next-cards{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;animation:fadeUp 0.6s 0.26s ease both;opacity:0}
+.nc{background:var(--cream);border:1px solid var(--border);border-radius:1rem;padding:1.1rem 1.4rem;text-align:left;max-width:200px;transition:border-color 0.2s}
+.nc:hover{border-color:var(--ink)}
+.nc-icon{font-size:1.4rem;margin-bottom:0.5rem}
+.nc-title{font-size:0.85rem;font-weight:500;margin-bottom:0.3rem}
+.nc-text{font-size:0.75rem;color:var(--muted);line-height:1.5}
+
+/* SHARE */
+.share-row{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.6s 0.34s ease both;opacity:0}
+.share-btn{display:flex;align-items:center;gap:7px;padding:0.65rem 1.3rem;border-radius:2rem;font-size:0.85rem;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.share-x{background:var(--ink);color:var(--paper)}
+.share-x:hover{opacity:0.85}
+.share-wa{background:#25D366;color:#fff}
+.share-wa:hover{opacity:0.85}
+.share-copy{background:var(--cream);color:var(--ink);border:1px solid var(--border)}
+.share-copy:hover{border-color:var(--ink)}
+
+/* FOOTER NOTE */
+.footer-note{margin-top:3rem;font-size:0.78rem;color:var(--muted);animation:fadeUp 0.6s 0.42s ease both;opacity:0}
+.footer-note a{color:var(--accent);text-decoration:none}
+.footer-note a:hover{text-decoration:underline}
+
+/* CONFETTI CANVAS */
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .hero{padding:3rem 1.5rem}
+  h1{font-size:2.8rem}
+  .next-cards{flex-direction:column;align-items:center}
+  .nc{max-width:100%;width:100%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">re<span>call</span></div>
+</nav>
+
+<canvas id="confetti"></canvas>
+
+<section class="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <div class="spot-badge">
+    <span class="spot-dot"></span>
+    <span>Spot #<span id="spot-num">2,401</span> claimed</span>
+  </div>
+
+  <p class="eyebrow">You're on the list</p>
+  <h1>Your ideas just<br/>got a <em>forever home.</em></h1>
+  <p class="sub">We'll email you the moment Recall is ready. Early Pro users get lifetime Pro pricing locked in — you're set.</p>
+
+  <div class="next-cards">
+    <div class="nc">
+      <div class="nc-icon">📬</div>
+      <div class="nc-title">Check your inbox</div>
+      <div class="nc-text">A confirmation is on its way. Might be in spam — add us to contacts.</div>
+    </div>
+    <div class="nc">
+      <div class="nc-icon">⚡</div>
+      <div class="nc-title">Move up the list</div>
+      <div class="nc-text">Share Recall with a friend to jump the queue and unlock Pro early.</div>
+    </div>
+    <div class="nc">
+      <div class="nc-icon">🔒</div>
+      <div class="nc-title">Price locked in</div>
+      <div class="nc-text">₹299/mo for life — only for early pro waitlist members. Price goes up at launch.</div>
+    </div>
+  </div>
+
+  <div class="share-row">
+    <button class="share-btn share-x" onclick="shareX()">𝕏 Share on X</button>
+    <button class="share-btn share-wa" onclick="shareWA()">💬 Share on WhatsApp</button>
+    <button class="share-btn share-copy" id="copy-btn" onclick="copyLink()">🔗 Copy link</button>
+  </div>
+
+  <p class="footer-note">
+    Changed your mind? <a href="mailto:hi@recall.app">Unsubscribe anytime.</a> &nbsp;·&nbsp; <a href="/">← Back to home</a>
+  </p>
+</section>
+
+<script>
+// Random spot number between 2401-2450 for social proof feel
+document.getElementById('spot-num').textContent = (2400 + Math.floor(Math.random() * 50)).toLocaleString('en-IN');
+
+// Share helpers
+const TEXT = "Just joined the waitlist for Recall — an AI second brain that captures user's ideas from WhatsApp, voice notes, email & resurfaces them at the right moment. Looks 🔥";
+const URL  = window.location.origin;
+function shareX()  { window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(TEXT + ' ' + URL)}`,'_blank'); }
+function shareWA() { window.open(`https://wa.me/?text=${encodeURIComponent(TEXT + ' ' + URL)}`,'_blank'); }
+function copyLink() {
+  navigator.clipboard.writeText(URL).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = '🔗 Copy link', 2000);
+  });
+}
+
+// ── CONFETTI ────────────────────────────────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const COLORS = ['#D4522A','#4A6FA5','#3EC97A','#F5F2EC','#C4882A','#8B4A9E'];
+  const PIECES = 120;
+  let particles = [];
+  let animating = true;
+
+  function rand(min, max){ return Math.random() * (max - min) + min; }
+
+  function createParticle(i) {
+    return {
+      x: rand(0, canvas.width),
+      y: rand(-200, -10),
+      r: rand(4, 9),
+      d: rand(2, 5),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      tilt: rand(-10, 10),
+      tiltAngle: 0,
+      tiltSpeed: rand(0.05, 0.12),
+      opacity: 1,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle',
+      w: rand(5, 11),
+      h: rand(3, 7),
+    };
+  }
+
+  for (let i = 0; i < PIECES; i++) particles.push(createParticle(i));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.save();
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.color;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.tiltAngle * Math.PI / 180);
+      if (p.shape === 'rect') {
+        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      } else {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.r/2, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+  }
+
+  function update() {
+    particles.forEach(p => {
+      p.y += p.d;
+      p.tiltAngle += p.tiltSpeed;
+      p.x += Math.sin(p.tiltAngle) * 1.2;
+      if (p.y > canvas.height + 20) {
+        p.y = rand(-80, -10);
+        p.x = rand(0, canvas.width);
+        p.opacity = 1;
+      }
+      if (p.y > canvas.height * 0.6) {
+        p.opacity = Math.max(0, 1 - (p.y - canvas.height * 0.6) / (canvas.height * 0.4));
+      }
+    });
+  }
+
+  let frame = 0;
+  function loop() {
+    if (!animating) return;
+    draw();
+    update();
+    frame++;
+    // Stop after 5s (300 frames at 60fps)
+    if (frame < 300) requestAnimationFrame(loop);
+    else { ctx.clearRect(0,0,canvas.width,canvas.height); animating = false; }
+  }
+  loop();
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+})();
+</script>
+</body>
+</html>
